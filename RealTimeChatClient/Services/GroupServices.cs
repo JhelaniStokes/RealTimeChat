@@ -80,7 +80,7 @@ namespace RealTimeChatClient.Services
         public async Task AddToGroup(int groupId, string username)
         {
             AddUserDto dto = new AddUserDto() { Username = username, GroupId = groupId };
-            await httpClient.PostAsJsonAsync($"adduser/", dto);
+            await httpClient.PostAsJsonAsync($"group/adduser", dto);
         }
 
     }
