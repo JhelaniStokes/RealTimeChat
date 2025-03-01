@@ -1,0 +1,104 @@
+﻿<Window x:Class="RealTimeChatClient.MVVM.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RealTimeChatClient.MVVM.Views" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+         Height="650" Width="1200"
+        Background="#36393f"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip">
+<!--
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </i:EventTrigger>
+        </i:Interaction.Triggers>-->
+
+
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+            
+        </Grid.ColumnDefinitions>
+        <Border Grid.ColumnSpan="2" Background="#252525" MouseDown="Border_MouseDown">
+            <Grid HorizontalAlignment="Stretch">
+                <Label Content="RealTimeChat" Foreground="Gray" FontWeight="Medium"/>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Name="Minimize" Width="20" Height="20" Background="Transparent" 
+                            BorderThickness="0" Content="_" Margin="0,0,0,3" Click="Minimize_Click"/>
+                    <Button Name ="Maximize" Width="20" Height="20" Background="Transparent" 
+                            BorderThickness="0" FontWeight="Bold" Content="▢" Click="Maximize_Click"/>
+                    <Button Name="Close" Width="20" Height="20" Background="Transparent" 
+                            BorderThickness="0" Content="🞩" Click="Close_Click"/>
+
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1" Background="#2f3136">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Content="Groups" VerticalAlignment="Center"  Foreground="Gray" FontWeight="Bold"/>
+            <Button Content="Create Group" Background="Transparent" BorderThickness="0" Width="73"
+                    Grid.Row="1" HorizontalAlignment="Left" Margin="4,0,0,0" Foreground="Gray"
+                    Command="{Binding ToggleCreateTextBoxVisible}"/>
+            <ListView Grid.Row="2" Background="Transparent" BorderThickness="0" 
+                      ItemsSource="{Binding Groups}" ItemContainerStyle="{StaticResource GroupDisplay}"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="#2f3136" BorderThickness="0,0,0,2" >
+                <Grid HorizontalAlignment="Stretch" Margin="8">
+                    <Label Content="{Binding CurrentGroupName}" 
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White"/>
+                    <Border Width="200" CornerRadius="8" Background="#2f3136" HorizontalAlignment="Left"
+                            Visibility="{Binding CreateTextBoxVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBox Text="{Binding AddGroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="Gray" Focusable="True">
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding CreateGroupCommand}" Key="Return"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Width="60" Content="Add User" Background="Transparent" Foreground="Gray"
+                                Command="{Binding AddUserCommand}" BorderThickness="0"/>
+                        <Button Width="50" Content="Login" Background="Transparent" Foreground="Gray"
+                                Command="{Binding LoginButtonCommand}" BorderThickness="0"/>
+                        
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <ListView ItemsSource="{Binding Messages}" Background="Transparent" BorderThickness="0" Margin="5,0,0,0"
+                      Grid.Row="1" ItemContainerStyle="{StaticResource ChatItem}"/>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Row="1" Height="50" Style="{StaticResource MessageBox}"/>
+            </Grid>
+            
+            
+
+
+        </Grid>
+    </Grid>
+</Window>
