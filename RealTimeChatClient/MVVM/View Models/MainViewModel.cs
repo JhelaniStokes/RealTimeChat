@@ -32,7 +32,9 @@ namespace RealTimeChatClient.MVVM.View_Models
         public ICommand LoginButtonCommand { get; }
         public ICommand SendCommand { get; }
         public ICommand ToggleCreateTextBoxVisible { get; }
+        public ICommand ToggleAddTextBoxVisible { get; }
         public ICommand CreateGroupCommand { get; }
+        public ICommand AddUserCommand { get; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,7 +48,9 @@ namespace RealTimeChatClient.MVVM.View_Models
             LoginButtonCommand = new RelayCommand(LoginButton);
             SendCommand = new RelayCommand(async () => await Send());
             ToggleCreateTextBoxVisible = new RelayCommand(CreateBoxToggle);
+            ToggleAddTextBoxVisible = new RelayCommand(AddBoxToggle);
             CreateGroupCommand = new RelayCommand(async () => await GroupCreate());
+            AddUserCommand = new RelayCommand(async () => await AddToGroup());
             client = new SignalRClient();
             
             client.OnMessageReceived += (user, message) =>
@@ -113,6 +117,22 @@ namespace RealTimeChatClient.MVVM.View_Models
                 OnPropertyChanged();
             } 
         }
+        private bool addTextBoxVisible;
+
+        public bool AddTextBoxVisible
+        {
+            get { return addTextBoxVisible; }
+            set { addTextBoxVisible = value; OnPropertyChanged(); }
+        }
+        private string addUserName;
+
+        public string AddUserName
+        {
+            get { return addUserName; }
+            set { addUserName = value; OnPropertyChanged(); }
+        }
+
+
 
         public string CurrentGroupName
         {
@@ -194,12 +214,26 @@ namespace RealTimeChatClient.MVVM.View_Models
             }
         }
 
+        public async Task AddToGroup()
+        {
+            if (!string.IsNullOrEmpty(AddUserName))
+            {
+                await groupServices.AddToGroup(SelectedItem.Id, AddUserName);
+                AddBoxToggle();
+                AddUserName = "";
+            }
+        }
+
         public void CreateBoxToggle()
         {
             CreateTextBoxVisible = !CreateTextBoxVisible;
         }
+        public void AddBoxToggle()
+        {
+            AddTextBoxVisible = !AddTextBoxVisible;
+        }
 
-       
+
         private async Task OnSelectedItemChanged()
         {
             if (SelectedItem != null)

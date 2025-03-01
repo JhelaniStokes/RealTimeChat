@@ -70,9 +70,11 @@ namespace RealTimeChat.Controllers
 
             return Ok(groups);
         }
-        [HttpPost("addUser/{groupId}/users/{username}")]
-        public async Task<IActionResult> AddUserToGroup(int groupId, string username)
+        [HttpPost("adduser")]
+        public async Task<IActionResult> AddUserToGroup(AddUserDto dto)
         {
+            int groupId = dto.GroupId;
+            string username = dto.Username;
             var group = await _dbContext.Groups.FindAsync(groupId);
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
             if (group == null || user == null)
@@ -90,7 +92,7 @@ namespace RealTimeChat.Controllers
             await _dbContext.SaveChangesAsync();
 
             // Notify the added user in real-time via SignalR
-            await _hubContext.Clients.User(user.Id.ToString()).SendAsync("GroupAdded");//, groupId, group.GroupName);
+            await _hubContext.Clients.User(username).SendAsync("GroupAdded");//, groupId, group.GroupName);
 
             return Ok("User added to group successfully");
         }

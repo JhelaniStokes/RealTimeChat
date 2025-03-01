@@ -75,10 +75,19 @@
                             </TextBox.InputBindings>
                         </TextBox>
                     </Border>
+                    <Border Width="200" CornerRadius="8" Background="#2f3136" HorizontalAlignment="Right"
+                            Visibility="{Binding AddTextBoxVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Margin="0,0,115,0">
+                        <TextBox Text="{Binding AddUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="Gray" Focusable="True">
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding AddUserCommand}" Key="Return"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                    </Border>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Width="60" Content="Add User" Background="Transparent" Foreground="Gray"
-                                Command="{Binding AddUserCommand}" BorderThickness="0"/>
+                                Command="{Binding ToggleAddTextBoxVisible}" BorderThickness="0"/>
                         <Button Width="50" Content="Login" Background="Transparent" Foreground="Gray"
                                 Command="{Binding LoginButtonCommand}" BorderThickness="0"/>
                         
