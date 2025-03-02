@@ -22,7 +22,7 @@ namespace RealTimeChat.Controllers
         {
             var userId = int.Parse(User.FindFirst("uid")?.Value);
             var messages = await _dbcontext.Messages.Where(m => m.GroupId == groupId).ToListAsync();
-            messages = messages.OrderByDescending(m => m.SentAt).ToList();
+            messages = messages.OrderBy(m => m.SentAt).ToList();
             return Ok(messages);
         }
     }
