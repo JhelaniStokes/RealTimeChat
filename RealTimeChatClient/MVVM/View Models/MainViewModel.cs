@@ -218,9 +218,12 @@ namespace RealTimeChatClient.MVVM.View_Models
         {
             if (!string.IsNullOrEmpty(AddUserName))
             {
-                await groupServices.AddToGroup(SelectedItem.Id, AddUserName);
+                bool response = await groupServices.AddToGroup(SelectedItem.Id, AddUserName);
+                if (!response)
+                    MessageBox.Show("error in doing that maybe wrong username?");
                 AddBoxToggle();
                 AddUserName = "";
+
             }
         }
 

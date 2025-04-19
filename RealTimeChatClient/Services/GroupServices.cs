@@ -77,10 +77,11 @@ namespace RealTimeChatClient.Services
             CreateGroupDto dto = new CreateGroupDto() { GroupName = groupName, IsDm = false };
             await httpClient.PostAsJsonAsync<CreateGroupDto>("group/create", dto);
         }
-        public async Task AddToGroup(int groupId, string username)
+        public async Task<bool> AddToGroup(int groupId, string username)
         {
             AddUserDto dto = new AddUserDto() { Username = username, GroupId = groupId };
-            await httpClient.PostAsJsonAsync($"group/adduser", dto);
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync($"group/adduser", dto);
+            return response.IsSuccessStatusCode;
         }
 
     }
